@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
@@ -23,6 +24,8 @@ public class WebTextView extends LinearLayout {
     String mFont;
     String mText;
     String mSecondaryFont;
+
+    private final String mHeadString="<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" />";
 
     private static final String DEFAULT_FONT = "Muli";
     private static final String DEFAULT_FONT_FAMILY = "'Muli', sans-serif";
@@ -105,6 +108,7 @@ public class WebTextView extends LinearLayout {
         setText(text,getFontColor(),getFont(),getFontFamily());
     }
 
+    @Deprecated
     public void setText(final String text, int color,final String googleFontName,final String googleFontFamily,String dfd) {
     }
 
@@ -129,12 +133,34 @@ public class WebTextView extends LinearLayout {
         stringBuilder.append("</body>");
         stringBuilder.append("</html>");
 
-        Log.d("blublu",stringBuilder.toString());
-
-        mWebView.loadData(stringBuilder.toString(), "text/html; charset=UTF-8", null);
+        Log.d("blublu", stringBuilder.toString());
 
         WebSettings settings= mWebView.getSettings();
         //settings.setDefaultFontSize(12);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        mWebView.loadData(stringBuilder.toString(), "text/html; charset=UTF-8", null);
+
+        //set right padding
+        setPadding(0,0,0,0);
+        mWebView.setPadding(getPaddingLeft(),this.getPaddingTop(),getPaddingRight(),getPaddingBottom());
+    }
+
+    public void setHtml(String htmlText){
+//        if(htmlText.contains("<head>")){
+//            htmlText=htmlText.replace("<head>",mHeadString);
+//        } else {
+//            htmlText=htmlText.replace("<html>","<html>"+mHeadString+"</head>");
+//        }
+//        Log.d("blublu",htmlText);
+
+        mWebView.setWebChromeClient(new WebChromeClient());
+        WebSettings settings= mWebView.getSettings();
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setDisplayZoomControls(false);
+        //settings.setDefaultFontSize(12);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        mWebView.loadData(htmlText, "text/html; charset=UTF-8", null);
     }
 }
