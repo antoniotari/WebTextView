@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -17,15 +16,13 @@ import android.widget.LinearLayout;
  */
 public class WebTextView extends LinearLayout {
 
-    protected View mView;
-    protected WebView mWebView;
-    String mFontFamily;
-    int mFontColor=-1;
-    String mFont;
-    String mText;
-    String mSecondaryFont;
-
-    private final String mHeadString="<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" />";
+    private View mView;
+    private WebView mWebView;
+    private String mFontFamily;
+    private int mFontColor=-1;
+    private String mFont;
+    private String mText;
+    private String mSecondaryFont;
 
     private static final String DEFAULT_FONT = "Muli";
     private static final String DEFAULT_FONT_FAMILY = "'Muli', sans-serif";
@@ -109,7 +106,8 @@ public class WebTextView extends LinearLayout {
     }
 
     @Deprecated
-    public void setText(final String text, int color,final String googleFontName,final String googleFontFamily,String dfd) {
+    public void setText(final String text, int color,final String googleFontName,final String googleFontFamily,String nothing) {
+        setText(text,color,googleFontName,googleFontFamily);
     }
 
     public void setText(final String text, int color,final String googleFontName,final String googleFontFamily) {
@@ -133,8 +131,6 @@ public class WebTextView extends LinearLayout {
         stringBuilder.append("</body>");
         stringBuilder.append("</html>");
 
-        Log.d("blublu", stringBuilder.toString());
-
         WebSettings settings= mWebView.getSettings();
         //settings.setDefaultFontSize(12);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -146,13 +142,6 @@ public class WebTextView extends LinearLayout {
     }
 
     public void setHtml(String htmlText){
-//        if(htmlText.contains("<head>")){
-//            htmlText=htmlText.replace("<head>",mHeadString);
-//        } else {
-//            htmlText=htmlText.replace("<html>","<html>"+mHeadString+"</head>");
-//        }
-//        Log.d("blublu",htmlText);
-
         mWebView.setWebChromeClient(new WebChromeClient());
         WebSettings settings= mWebView.getSettings();
         settings.setLoadWithOverviewMode(true);
